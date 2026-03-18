@@ -1,35 +1,56 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+/*
+    LOGIC:
+    --------
+    - A graph is bipartite if we can color it using 2 colors (0 and 1)
+      such that no two adjacent nodes have the same color.
 
-// logic -->
-    // odd length chi cycle asli ke bipartite nahiye
-    // mhnun side che nodes la 0, 1 as colour krt chal and mg cycle asli and same colour asla tr falsee return kra
+    - If an odd length cycle exists → NOT bipartite
+
+    APPROACH (BFS):
+    ----------------
+    - Start from a node, assign color 0
+    - Push into queue
+    - For every neighbor:
+        → If unvisited → assign opposite color and push
+        → If already visited and same color → return false
+*/
 
 class Solution {
 public:
 
-    bool bfs (vector <int>& vis, vector <vector <int>>& graph, int node, int col, int par) {
+    /*
+        BFS Function:
+        -------------
+        vis   → stores color (-1 = unvisited, 0/1 = colored)
+        graph → adjacency list
+        node  → starting node
+    */
+    bool bfs(vector<int>& vis, vector<vector<int>>& graph, int node) {
 
-        vis[node] = col;
-        queue <pair <int, int>> q;
-        q.push({node, -1});
+        queue<int> q;
 
+        // Start with color 0
+        vis[node] = 0;
+        q.push(node);
 
         while (!q.empty()) {
-            pair <int, int> i = q.front();
+
+            int curr = q.front();
             q.pop();
 
-            for (auto p : graph[i.first]) {
-                // asun visit kela nahiy 
-                if (vis[p] == -1) {
+            // Traverse all neighbors
+            for (auto nei : graph[curr]) {
 
-                    // color change krun insert kra  
-                    vis[p] = 1 - vis[i.first];
-                    q.push({p, i.first});
+                // If not visited → assign opposite color
+                if (vis[nei] == -1) {
+                    vis[nei] = 1 - vis[curr];
+                    q.push(nei);
                 }
-                // side la ahe ani same color ahey
-                else if (vis[p] == vis[i.first]) {
+                // If visited and same color → NOT bipartite
+                else if (vis[nei] == vis[curr]) {
                     return false;
                 }
             }
@@ -37,15 +58,20 @@ public:
 
         return true;
     }
-    bool isBipartite(vector<vector<int>>& graph) {
-        int n = graph.size();
-        vector <int> vis (n , -1);
 
+    bool isBipartite(vector<vector<int>>& graph) {
+
+        int n = graph.size();
+        vector<int> vis(n, -1);  // -1 = unvisited
+
+        // Handle disconnected components
         for (int i = 0; i < n; i++) {
             if (vis[i] == -1) {
-                if (!bfs(vis, graph, i, 0, -1)) return false;
+                if (!bfs(vis, graph, i))
+                    return false;
             }
         }
+
         return true;
     }
 };
