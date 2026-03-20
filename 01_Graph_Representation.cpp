@@ -24,7 +24,6 @@ int main () {
         adj2[u][v] = 1;
     }
 
-
     // printing adj1 
     for (ll i = 0; i < n; i++) {
 
