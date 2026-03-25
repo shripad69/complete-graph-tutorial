@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// logic --> priority stops la dya , and j pn path atmost k paryant yetat te update krt raha 
-
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
@@ -19,8 +17,6 @@ public:
             adj[u].push_back({weight, v});
         }
 
-
-        // {stop, {dist, node}}
         queue < pair <int, pair <int, int>>> pq;
         dist[src] = 0;
         pq.push({-1, {0, src}});
@@ -32,18 +28,13 @@ public:
             int stop = pq.front().first;
             pq.pop();
             
-            if (dist[node] < distance) continue;
-            // stop > k to path skip kra
-            if (stop > k) continue;
+            if (stop >= k) continue;
 
             for (auto i : adj[node]) {
                 int newnode = i.second;
                 int weight = i.first;
                 int currStop = stop + 1;
-
-
-                // ekda check kra to path k peksha small ahe ka mg update kra
-                if (dist[newnode] > distance + weight && currStop <= k) {
+                if (dist[newnode] > distance + weight) {
                     dist[newnode] = distance + weight;
                     pq.push({ currStop,{dist[newnode], newnode}});
                 }
