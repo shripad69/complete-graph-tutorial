@@ -35,7 +35,7 @@ class Solution {
                 int nx = cx + dx[p];
                 int ny = cy + dy[p];
 
-                if (!vis[nx][ny] && nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                if ( nx >= 0 && nx < n && ny >= 0 && ny < m && !vis[nx][ny] && grid[nx][ny]) {
                     vis[nx][ny] = 1;
                     q.push({{nx, ny}, dist + 1});
                 }
