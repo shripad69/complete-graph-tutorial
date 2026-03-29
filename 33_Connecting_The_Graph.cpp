@@ -49,7 +49,7 @@ class Solution {
     int Solve(int n, vector<vector<int>>& edge) {
 
         int components = 0, extraEdges = 0;
-        DisjointSet ds = DisjointSet(n + 1);
+        DisjointSet ds = DisjointSet(n);
 
         for (int i = 0; i < edge.size(); i++) {
             int u = edge[i][0];
